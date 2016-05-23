@@ -64,6 +64,8 @@ public class tempView extends JFrame implements Observer {
         fahrenheit = new JLabel("Fahrenheit");
         celsius = new JLabel("Celsius");
 
+
+
         //Textfelder erezeugen
         input_fahrenheit = new JTextField("-40");
         input_celsius = new JTextField("-40");
@@ -100,13 +102,30 @@ public class tempView extends JFrame implements Observer {
         content.pack();
         content.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         content.setVisible(true);
+
     }
 
     public int getFahrenheitText(){
+        try {
+            Integer.parseInt(input_fahrenheit.getText());
+        }
+        catch(NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(content, "Invalid Input!");
+            return -40;
+        }
         return Integer.parseInt(input_fahrenheit.getText());
     }
 
     public int getCelsiusText(){
+        try {
+            Integer.parseInt(input_celsius.getText());
+        }
+        catch(NumberFormatException e)
+        {
+            JOptionPane.showMessageDialog(content, "Invalid Input!");
+            return -40;
+        }
         return Integer.parseInt(input_celsius.getText());
     }
 
