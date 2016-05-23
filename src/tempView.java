@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,6 +13,8 @@ import java.util.Observer;
  * @author Philipp Liebe
  */
 public class tempView extends JFrame implements Observer {
+    private tempController controller;
+
     private JFrame content;
     private Container container;
 
@@ -26,7 +30,11 @@ public class tempView extends JFrame implements Observer {
     private JTextField input_fahrenheit;
     private JTextField input_celsius;
 
-    public tempView(){
+    private tempModel model;
+
+    public tempView(tempController t){
+        controller = t;
+
         //Das Hauptfenster erzeugen
         content = new JFrame("Temperature Converter");
         container = getContentPane();
@@ -39,9 +47,9 @@ public class tempView extends JFrame implements Observer {
         slider_celsius.setOrientation(JSlider.VERTICAL);
 
         slider_fahrenheit.setMajorTickSpacing(40);
-        slider_fahrenheit.setMinorTickSpacing(10);
+        slider_fahrenheit.setMinorTickSpacing(1);
         slider_celsius.setMajorTickSpacing(20);
-        slider_celsius.setMinorTickSpacing(5);
+        slider_celsius.setMinorTickSpacing(1);
 
         slider_fahrenheit.setPaintLabels(true);
         slider_celsius.setPaintLabels(true);
@@ -50,7 +58,7 @@ public class tempView extends JFrame implements Observer {
 
         //Buttons erzeugen
         convert_fahrenheit = new JButton("convert to Celsius");
-        convert_celsius = new JButton("convert to fahrenheit");
+        convert_celsius = new JButton("convert to Fahrenheit");
 
         //Label erzeugen
         fahrenheit = new JLabel("Fahrenheit");
@@ -94,7 +102,51 @@ public class tempView extends JFrame implements Observer {
         content.setVisible(true);
     }
 
+    public int getFahrenheitText(){
+        return Integer.parseInt(input_fahrenheit.getText());
+    }
+
+    public int getCelsiusText(){
+        return Integer.parseInt(input_celsius.getText());
+    }
+
+    public int getFahrenheitSlider(){
+        return slider_fahrenheit.getValue();
+    }
+
+    public int getCelsiusSlider(){
+        return slider_celsius.getValue();
+    }
+
+    public boolean getAdjustCelsius(){
+        return slider_celsius.getValueIsAdjusting();
+    }
+
+    public boolean getAdjustFahrenheit(){
+        return slider_fahrenheit.getValueIsAdjusting();
+    }
+
+    public void addAcListener(ActionListener a){
+        convert_fahrenheit.addActionListener(a);
+        convert_celsius.addActionListener(a);
+    }
+
+    public void addChListener(ChangeListener cl1, ChangeListener cl2){
+        slider_fahrenheit.addChangeListener(cl1);
+        slider_celsius.addChangeListener(cl2);
+    }
+
     public void update(Observable o, Object arg) {
+        model = (tempModel) o;
+        int c = model.getCelsius();
+        int f = model.getFahrenheit();
+
+        input_celsius.setText(String.valueOf(c));
+        slider_celsius.setValue(c);
+
+        input_fahrenheit.setText(String.valueOf(f));
+        slider_fahrenheit.setValue(f);
+
 
     }
 }

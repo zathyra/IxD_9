@@ -7,7 +7,7 @@
 public class tempMain {
     public static void main(String[] args)
     {
-        tempView ourTempController = new tempView();
+        tempController ourTempController = new tempController();
     }
 }
 
